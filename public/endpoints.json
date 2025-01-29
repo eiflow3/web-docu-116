@@ -1,0 +1,168 @@
+[
+  {
+    "id": "login",
+    "endpoint": "GET /api/auth/login",
+    "purpose": "Authenticate user and get access token",
+    "requiredBody": {
+      "username": "string",
+      "password": "string"
+    },
+    "successResponse": {
+      "status": "Request status.",
+      "message": "Notification of successful login.",
+      "token": "Genrated JWT Token."
+    }
+  },
+  {
+    "id": "register",
+    "endpoint": "POST /api/auth/register",
+    "purpose": "Create new user account",
+    "requiredBody": {
+      "email": "string",
+      "password": "string",
+      "username": "string",
+      "firstName": "string",
+      "lastName": "string"
+    },
+    "successResponse": {
+      "status": "Request status.",
+      "message": "Notification of successful registration.",
+      "data": {
+        "id": "Id generated for the user.",
+        "email": "Email of the user.",
+        "username": "Username of the user.",
+        "first_name": "First name of the user.",
+        "last_name": "Last name of the user."
+      }
+    }
+  },
+  {
+    "id": "logout",
+    "endpoint": "GET /api/auth/logout",
+    "purpose": "Clear authentication token",
+    "successResponse": {
+      "message": "Notification of successful logout."
+    }
+  },
+  {
+    "id": "get-user",
+    "endpoint": "GET /api/user/:username",
+    "queryParameters": {
+      "username": "string"
+    },
+    "purpose": "Retrieve user profile information",
+    "authentication": "Required",
+    "successResponse": {
+      "status": "Request status.",
+      "message": "Profile information successfully fetched.",
+      "data": {
+        "id": "Id of the user.",
+        "email": "Fetched email of the user.",
+        "username": "Fetch username of the user."
+      }
+    }
+  },
+  {
+    "id": "get-events",
+    "endpoint": "GET /api/events",
+    "purpose": "Retrieve all events",
+    "authentication": "Required",
+    "successResponse": {
+      "status": "Request status.",
+      "message": "Notification of successful event fetching.",
+      "data": "Array of events"
+    }
+  },
+  {
+    "id": "post-events",
+    "endpoint": "POST /api/events",
+    "purpose": "Create new event",
+    "authentication": "Required",
+    "requiredBody": {
+      "userId": "number",
+      "eventTitle": "string",
+      "description": "string",
+      "date": "string",
+      "location": "string",
+      "maxAttendees": "number"
+    },
+    "successResponse": {
+      "status": "Request status.",
+      "message": "Notification of successful event creation.",
+      "data": "Created event object."
+    }
+  },
+  {
+    "id": "patch-events",
+    "endpoint": "PATCH /api/events/:eventID",
+    "queryParameters": {
+      "eventID": "number"
+    },
+    "purpose": "Modify existing event",
+    "authentication": "Required",
+    "optionalBody": {
+      "eventTitle": "string",
+      "description": "string",
+      "date": "string",
+      "location": "string",
+      "maxAttendees": "number"
+    },
+    "successResponse": {
+      "status": "Request status.",
+      "message": "Notification of successful event update.",
+      "data": "Updated event object."
+    }
+  },
+  {
+    "id": "delete-events",
+    "endpoint": "DELETE /api/events/:eventID",
+    "queryParameters": {
+      "eventID": "number"
+    },
+    "purpose": "Remove event and all related registrations",
+    "authentication": "Required",
+    "successResponse": {
+      "status": "Request status.",
+      "message": "Notification of successful event deletion."
+    }
+  },
+  {
+    "id": "get-my-events",
+    "endpoint": "GET /api/my-events/:userID",
+    "queryParameters": {
+      "userID": "number"
+    },
+    "purpose": "List all events user has registered for",
+    "authentication": "Required",
+    "successResponse": {
+      "status": "Request status.",
+      "message": "Notification of successful joined events fetching.",
+      "data": "User joined events array."
+    }
+  },
+  {
+    "id": "post-my-events",
+    "endpoint": "POST /api/my-events/:userID/:eventID",
+    "queryParameters": {
+      "userID": "number",
+      "eventID": "number"
+    },
+    "purpose": "Register user for an event",
+    "authentication": "Required",
+    "successResponse": {
+      "status": "Request status.",
+      "message": "Notification of successful event registration.",
+      "data": "Event joined object."
+    }
+  },
+  {
+    "id": "delete-my-events",
+    "purpose": "Remove user registration from event",
+    "endpoint": "DELETE /api/my-events/:userID/:eventID",
+    "authentication": "Required",
+    "successResponse": {
+      "status": "Request status.",
+      "message": "Event withdrawn object."
+    }
+  }
+]
