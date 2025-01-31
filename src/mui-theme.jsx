@@ -41,6 +41,10 @@ export default function ThemeProviderWrapper({ children }) {
         fontSize: "2.4rem",
         fontWeight: 800,
       },
+      nine: {
+        fontSize: "3rem",
+        fontWeight: 800,
+      },
     },
     components: {
       MuiTypography: {
@@ -60,6 +64,7 @@ export default function ThemeProviderWrapper({ children }) {
           six: "h3",
           seven: "h2",
           eight: "h1",
+          nine: "h1",
         },
       },
     },

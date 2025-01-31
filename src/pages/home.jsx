@@ -6,14 +6,16 @@ import {
   Typography,
   List,
   ListItem,
+  Stack,
 } from "@mui/material";
 import { Link, Outlet } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import CopyrightIcon from "@mui/icons-material/Copyright";
 
 const endpoints = [
   {
     id: 1,
-    method: "GET",
+    method: "POST",
     route: "/auth/login",
     link: "/endpoint/login",
   },
@@ -109,7 +111,7 @@ export default function Home() {
       >
         <Toolbar>
           <Typography variant="three" color="#000">
-            Web Documentation
+            EMS WEB DOC
           </Typography>
         </Toolbar>
       </AppBar>
@@ -133,10 +135,7 @@ export default function Home() {
             gap: 1,
           }}
         >
-          <Link
-            href="/"
-            style={{ textDecoration: "none", color: "#000" }}
-          >
+          <Link href="/" style={{ textDecoration: "none", color: "#000" }}>
             <Typography variant="two">Home</Typography>
           </Link>
           <List>
@@ -180,12 +179,15 @@ export default function Home() {
           </Link>
           <Link
             to="/about"
-            target="_blank"
             style={{ textDecoration: "none", color: "#000" }}
           >
             <Typography variant="two">About Devs</Typography>
           </Link>
         </Toolbar>
+        <Stack direction={"row"} sx={{ mt: "auto", p: 1, gap:.5, alignItems: "center" }}>
+          <CopyrightIcon fontSize="small"></CopyrightIcon>
+          <Typography variant="one">MDRGN, December 2025</Typography>
+        </Stack>
       </Drawer>
       <Outlet />
     </Container>

@@ -2,6 +2,71 @@ import { useParams, useSearchParams } from "react-router-dom";
 import { Typography, Box, Tooltip, List, ListItem, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 
+const exrequest = [
+  {
+    id: "login",
+    link: "POST https://my-event-management-server/api/auth/login",
+    payload: `     username: "johndoe",
+     password: "password123"`,
+  },
+  {
+    id: "register",
+    link: "POST https://my-event-management-server/api/auth/register",
+    payload: `     username: "jondoe",
+     email: "jondoe@email.com",
+     password: "password123",
+     firstName: "Jon",
+     lastName: "Doe"`,
+  },
+  {
+    id: "logout",
+    link: "GET https://my-event-management-server/api/auth/logout",
+  },
+  {
+    id: "get-user",
+    link: "GET https://my-event-management-server/api/user/johndoe",
+  },
+  {
+    id: "get-events",
+    link: "GET https://my-event-management-server/api/events",
+  },
+  {
+    id: "post-events",
+    link: "POST https://my-event-management-server/api/events",
+    payload: `     userId: 1,
+     eventTitle: "Event 1",
+     description: "Description of event 1",
+     date: "2022-12-12T12:00:00",
+     location: "Location of event 1",
+     maxAttendees: 100`,
+  },
+  {
+    id: "patch-events",
+    link: "PATCH https://my-event-management-server/api/events/1",
+    payload: `     eventTitle: "Event 1",
+     description: "Description of event 1",
+     date: "2022-12-12T12:00:00",
+     location: "Location of event 1",
+     maxAttendees: 100`,
+  },
+  {
+    id: "delete-events",
+    link: "DELETE https://my-event-management-server/api/events/1",
+  },
+  {
+    id: "get-my-events",
+    link: "GET https://my-event-management-server/api/my-events",
+  },
+  {
+    id: "post-my-events",
+    link: "POST https://my-event-management-server/api/my-events/1/2",
+  },
+  {
+    id: "delete-my-events",
+    link: "DELETE https://my-event-management-server/api/my-events/1/2",
+  },
+];
+
 const exresponse = [
   {
     id: "login",
@@ -41,21 +106,27 @@ const exresponse = [
     data: `         data:[
                 {
                     id: 1,
-                    title: "Event 1",
-                    description: "Description of event 1",
+                    event_name: "Event 1",
+                    organizerId: "2",
+                    reminders: "Reminders of event 1",
                     location: "Location of event 1",
+                    max_participants: 200,
+                    registered_participants: 150,
                     date: "2022-12-12",
                     time: "12:00",
                 },
                 ...
                 {
-                id: 10,
-                title: "Event 1",
-                description: "Description of event 1",
-                location: "Location of event 1",
-                date: "2022-12-12",
-                time: "12:00",
-                },
+                    id: 10,
+                    event_name: "Event 10",
+                    organizerId: "1",
+                    reminders: "Reminders of event 10",
+                    location: "Location of event 10",
+                    max_participants: 100,
+                    registered_participants: 100,
+                    date: "2022-12-12",
+                    time: "12:00",
+                }
             ]
       `,
   },
@@ -65,9 +136,10 @@ const exresponse = [
     message: "Created event successfully.",
     data: `         data:{
                 id: 1,
-                title: "Event 1",
-                description: "Description of event 1",
+                event_name: "Event 1",
+                reminders: "Reminders of event 1",
                 location: "Location of event 1",
+                max_participants: 100,
                 date: "2022-12-12",
                 time: "12:00",
               }`,
@@ -78,9 +150,10 @@ const exresponse = [
     message: "Updated event successfully.",
     data: `         data:{
                 id: 1,
-                title: "Event 1",
-                description: "Description of event 1",
+                event_name: "Event 1",
+                reminders: "Description of event 1",
                 location: "Location of event 1",
+                max_participants: 100,
                 date: "2022-12-12",
                 time: "12:00",
               }`,
@@ -95,32 +168,18 @@ const exresponse = [
     status: "Success",
     message: "Joined events fetched successfully.",
     data: `         data:[
-                {
-                    id: 1,
-                    title: "Event 1",
-                    description: "Description of event 1",
-                    location: "Location of event 1",
-                    date: "2022-12-12",
-                    time: "12:00",
-                },
-                ...
-                {
-                    id: 10,
-                    title: "Event 1",
-                    description: "Description of event 1",
-                    location: "Location of event 1",
-                    date: "2022-12-12",
-                    time: "12:00",
-                }
-            ]`,
+                  1,
+                  ...
+                  10,
+              ]`,
   },
   {
     id: "post-my-events",
     status: "Success",
     message: "Registered for event successfully.",
-    data: `{
+    data: `     data:{
             event_id: 1,
-        }`,
+            }`,
   },
   {
     id: "delete-my-events",
@@ -152,6 +211,7 @@ export default function Endpoint() {
   const [ENDPOINTS, setENDPOINTS] = useState([]);
   const [ENDPOINT, setENDPOINT] = useState({});
   const [RESPONSE, setRESPONSE] = useState({});
+  const [REQUEST, setREQUEST] = useState({});
   const params = useParams();
   const { endpoint } = params;
   useEffect(() => {
@@ -169,13 +229,18 @@ export default function Endpoint() {
           setRESPONSE(r);
         }
       });
+      exrequest.filter((r) => {
+        if (r.id === endpoint) {
+          setREQUEST(r);
+        }
+      });
     };
     importEndpoints();
   }, []);
   const e = `[
     {`;
 
-  const z = `   }
+  const z = `    }
 ]`;
 
   return (
@@ -197,7 +262,7 @@ export default function Endpoint() {
         <Stack spacing={0.5}>
           <Typography variant="four">BASE URL</Typography>
           <Typography variant="two" color="error">
-            https://my-event-management-app
+            https://my-event-management-server
           </Typography>
         </Stack>
         <Stack spacing={0.5}>
@@ -327,17 +392,43 @@ export default function Endpoint() {
         </Stack>
         <Stack spacing={0.5}>
           <Typography variant="four">EXAMPLE</Typography>
-          <Typography variant="three">Request</Typography>
-          <Typography variant="three" sx={{ bgcolor: "#EAEAEA", padding: 2 }}>Response
-          <pre>{e}</pre>
-          {RESPONSE.status === undefined ? null : (
-            <pre>       status: "{RESPONSE.status}"</pre>
-          )}
-            <pre>       message: "{RESPONSE.message}"</pre>
-          {RESPONSE.data == undefined ? null : <pre>{RESPONSE.data}</pre>}
-          <pre>{z}</pre>
+          <Typography variant="three" sx={{ bgcolor: "#EAEAEA", padding: 2 }}>
+            Request
+            {REQUEST.link == undefined ? null : <pre>{REQUEST.link}</pre>}
+            {REQUEST.payload == undefined ? null : (
+              <>
+                <br />
+                <pre>{e}</pre>
+                <pre>{REQUEST.payload}</pre>
+                <pre>{z}</pre>
+              </>
+            )}
           </Typography>
-          
+          <Typography variant="three" sx={{ bgcolor: "#EAEAEA", padding: 2 }}>
+            Response
+            <pre>{e}</pre>
+            {RESPONSE.status === undefined ? null : (
+              <pre>
+                {" "}
+                {"    "}status: "{RESPONSE.status}"
+              </pre>
+            )}
+            <pre>
+              {"    "} message: "{RESPONSE.message}"
+            </pre>
+            {RESPONSE.data == undefined ? null : <pre>{RESPONSE.data}</pre>}
+            <pre>{z}</pre>
+          </Typography>
+        </Stack>
+        <Stack spacing={2}>
+          <Typography variant="four">Authentication</Typography>
+          <Typography variant="two">
+            All protected routes require a valid JWT token in the Authorization
+            header:
+          </Typography>
+          <Typography variant="two" sx={{ bgcolor: "#EAEAEA", padding: 2 }}>
+            Authorization: Bearer {"<your_jwt_token>"}
+          </Typography>
         </Stack>
         <Stack spacing={0.5}>
           <Typography variant="four">ERRORS</Typography>

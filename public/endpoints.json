@@ -1,7 +1,7 @@
 [
   {
     "id": "login",
-    "endpoint": "GET /api/auth/login",
+    "endpoint": "POST /api/auth/login",
     "purpose": "Authenticate user and get access token",
     "requiredBody": {
       "username": "string",

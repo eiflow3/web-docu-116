@@ -4,6 +4,7 @@ import Home from "../pages/home.jsx";
 import Endpoint from "../components/endpoint.jsx";
 import Resources from "../components/resources.jsx";
 import Landing from "../components/landing.jsx";
+import AboutDevs from "../components/about-devs.jsx";
 
 export default function RouterProviderWrapper() {
   const router = createBrowserRouter([
@@ -22,6 +23,10 @@ export default function RouterProviderWrapper() {
         {
           path: "/resources",
           element: <Resources />,
+        },
+        {
+          path: "/about",
+          element: <AboutDevs />,
         }
       ],
     },

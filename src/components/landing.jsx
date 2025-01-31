@@ -89,7 +89,7 @@ export default function Landing() {
           </Box>
           <CardContent>
             <Stack spacing={3}>
-              <Typography variant="three" sx={{ fontWeight: "600" }}>
+              <Typography variant="three" sx={{ fontWeight: "6  00" }}>
                 API Endpoints
               </Typography>
               <Typography variant="two">
